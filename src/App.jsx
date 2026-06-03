@@ -4,7 +4,6 @@ import Home from './pages/Home';
 import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
 import Software from './pages/Software';
-import Services from './pages/Services';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import RequestQuote from './pages/RequestQuote';
@@ -17,7 +16,6 @@ function App() {
         <Route path="products" element={<Products />} />
         <Route path="products/:id" element={<ProductDetail />} />
         <Route path="software" element={<Software />} />
-        <Route path="services" element={<Services />} />
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
         <Route path="request-quote" element={<RequestQuote />} />

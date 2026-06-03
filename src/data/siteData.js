@@ -220,7 +220,6 @@ export const navLinks = [
       { name: 'Accessories', path: '/products?category=accessories' },
     ]
   },
-  { name: 'Services', path: '/services' },
   { name: 'Software', path: '/software' },
   { name: 'About Us', path: '/about' },
   { name: 'Contact Us', path: '/contact' },
