@@ -1,0 +1,79 @@
+/* ===== BRANDS MARQUEE ===== */
+.brands-section {
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  min-width: 140px;
+  height: 60px;
+  background: var(--bg-gray);
+  border-radius: var(--radius-lg);
+  font-size: 18px;
+  font-weight: 800;
+  color: #9CA3AF;
+  letter-spacing: 2px;
+  transition: var(--transition);
+  user-select: none;
+}
+
+.brand-logo:hover {
+  color: var(--primary);
+  background: var(--primary-light);
+}
+
+/* ===== HAPPY CLIENTS ===== */
+.clients-section {
+  background: var(--bg-gray);
+}
+
+.client-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 28px;
+  min-width: 180px;
+  height: 72px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  transition: var(--transition);
+  user-select: none;
+}
+
+.client-logo:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary);
+}
+
+.client-logo .client-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.client-logo:nth-child(1) .client-icon { background: #FEE2E2; color: #EF4444; }
+.client-logo:nth-child(2) .client-icon { background: #DBEAFE; color: #3B82F6; }
+.client-logo:nth-child(3) .client-icon { background: #D1FAE5; color: #10B981; }
+.client-logo:nth-child(4) .client-icon { background: #FEF3C7; color: #F59E0B; }
+.client-logo:nth-child(5) .client-icon { background: #E0E7FF; color: #6366F1; }
+.client-logo:nth-child(6) .client-icon { background: #FCE7F3; color: #EC4899; }
+.client-logo:nth-child(7) .client-icon { background: #FEE2E2; color: #EF4444; }
+.client-logo:nth-child(8) .client-icon { background: #DBEAFE; color: #3B82F6; }
+.client-logo:nth-child(9) .client-icon { background: #D1FAE5; color: #10B981; }
+.client-logo:nth-child(10) .client-icon { background: #FEF3C7; color: #F59E0B; }
+.client-logo:nth-child(11) .client-icon { background: #E0E7FF; color: #6366F1; }
+.client-logo:nth-child(12) .client-icon { background: #FCE7F3; color: #EC4899; }

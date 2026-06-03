@@ -1,0 +1,248 @@
+/* ===== INDUSTRIES ===== */
+.industries-section {
+  background: var(--bg-gray);
+}
+
+.industry-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 28px 20px;
+  text-align: center;
+  transition: var(--transition);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.industry-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 8px 30px rgba(0, 102, 255, 0.1);
+  transform: translateY(-4px);
+}
+
+.industry-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-lg);
+  background: var(--primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-size: 24px;
+  transition: var(--transition);
+}
+
+.industry-card:hover .industry-icon {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.industry-card h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ===== SERVICES ===== */
+.services-section {
+  background: var(--white);
+}
+
+.service-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 28px 24px;
+  transition: var(--transition);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.service-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-6px);
+  border-color: transparent;
+}
+
+.service-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-size: 24px;
+  transition: var(--transition);
+}
+
+.service-card:hover .service-icon {
+  background: var(--primary);
+  color: var(--white);
+}
+
+.service-card h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.service-card p {
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.6;
+}
+
+/* ===== TESTIMONIALS ===== */
+.testimonials-section {
+  background: var(--bg-gray);
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .testimonials-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.testimonial-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  transition: var(--transition);
+}
+
+.testimonial-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+.testimonial-stars {
+  display: flex;
+  gap: 4px;
+  color: #FFC107;
+  margin-bottom: 16px;
+}
+
+.testimonial-card blockquote {
+  font-size: 15px;
+  color: var(--text-sub);
+  line-height: 1.7;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.testimonial-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.testimonial-info h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.testimonial-info span {
+  font-size: 13px;
+  color: var(--text-sub);
+}
+
+/* ===== INQUIRY FORM ===== */
+.inquiry-section {
+  background: var(--white);
+}
+
+.inquiry-wrapper {
+  background: var(--primary-light);
+  border-radius: var(--radius-2xl);
+  padding: 40px 24px;
+  border: 1px solid rgba(0, 102, 255, 0.08);
+}
+
+@media (min-width: 1024px) {
+  .inquiry-wrapper { padding: 56px 48px; }
+}
+
+.inquiry-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.inquiry-header h2 {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+@media (min-width: 768px) {
+  .inquiry-header h2 { font-size: 34px; }
+}
+
+.inquiry-header p {
+  font-size: 15px;
+  color: var(--text-sub);
+}
+
+/* ===== GOOGLE MAP ===== */
+.map-section {
+  padding: 0;
+}
+
+.map-container {
+  width: 100%;
+  height: 400px;
+  background: var(--bg-gray);
+  position: relative;
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.map-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #EBF2FF, #F5F9FF);
+  color: var(--text-sub);
+  font-size: 16px;
+  font-weight: 500;
+}

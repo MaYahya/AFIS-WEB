@@ -1,0 +1,156 @@
+/* ===== TOTEM POS ===== */
+.totem-section {
+  background: var(--white);
+}
+
+.totem-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .totem-grid { grid-template-columns: 1fr 1fr; gap: 64px; }
+}
+
+.totem-image-wrapper {
+  position: relative;
+}
+
+.totem-screenshot {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(135deg, #EBF2FF, #F5F9FF);
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.totem-screenshot-mockup {
+  width: 90%;
+  height: 85%;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .totem-screenshot-mockup {
+    grid-template-columns: 1fr;
+  }
+}
+
+.totem-mock-sidebar {
+  background: var(--primary);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.totem-mock-sidebar-item {
+  height: 10px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 4px;
+}
+
+.totem-mock-sidebar-item:first-child {
+  background: rgba(255,255,255,0.5);
+  width: 70%;
+  margin-bottom: 12px;
+}
+
+.totem-mock-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.totem-mock-header {
+  display: flex;
+  gap: 8px;
+}
+
+.totem-mock-header div {
+  height: 10px;
+  background: var(--border);
+  border-radius: 4px;
+  flex: 1;
+}
+
+.totem-mock-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  flex: 1;
+}
+
+.totem-mock-cards div {
+  background: var(--primary-light);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(0, 102, 255, 0.1);
+}
+
+.totem-content h2 {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+@media (min-width: 1024px) {
+  .totem-content h2 { font-size: 38px; }
+}
+
+.totem-content > p {
+  font-size: 16px;
+  color: var(--text-sub);
+  margin-bottom: 28px;
+  line-height: 1.7;
+}
+
+.totem-features-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.totem-feat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  padding: 8px 0;
+}
+
+.totem-feat-icon {
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  border-radius: 50%;
+  background: rgba(0, 102, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-size: 11px;
+}
+
+.totem-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}

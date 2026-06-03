@@ -1,0 +1,84 @@
+.top-header {
+  background: var(--text);
+  color: var(--white);
+  height: 40px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.top-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.top-header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.top-header-left a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255,255,255,0.85);
+  transition: var(--transition);
+  font-size: 13px;
+}
+
+.top-header-left a:hover {
+  color: var(--white);
+}
+
+.top-header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.top-header-hours {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255,255,255,0.85);
+  font-size: 13px;
+}
+
+.top-header-social {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 8px;
+  padding-left: 16px;
+  border-left: 1px solid rgba(255,255,255,0.2);
+}
+
+.top-header-social a {
+  color: rgba(255,255,255,0.7);
+  font-size: 15px;
+  transition: var(--transition);
+  display: flex;
+}
+
+.top-header-social a:hover {
+  color: var(--white);
+}
+
+@media (max-width: 768px) {
+  .top-header-left a span,
+  .top-header-hours span,
+  .top-header-right {
+    display: none;
+  }
+  .top-header-left {
+    width: 100%;
+    justify-content: center;
+    gap: 16px;
+  }
+  .top-header-left a span {
+    display: none;
+  }
+}
