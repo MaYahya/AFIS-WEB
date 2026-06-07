@@ -12,6 +12,10 @@ const TopHeader = () => {
             <FiPhone size={14} />
             <span>{siteConfig.phone}</span>
           </a>
+          <span className="phone-separator">|</span>
+          <a href={`tel:${siteConfig.phone2.replace(/\s/g, '')}`}>
+            <span>{siteConfig.phone2}</span>
+          </a>
           <a href={`mailto:${siteConfig.email}`}>
             <FiMail size={14} />
             <span>{siteConfig.email}</span>

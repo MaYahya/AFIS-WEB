@@ -65,7 +65,8 @@ const Footer = () => {
               <div className="footer-contact-icon"><FiPhone /></div>
               <div className="footer-contact-text">
                 <strong>Phone</strong>
-                {siteConfig.phone}
+                {siteConfig.phone} <br />
+                {siteConfig.phone2}
               </div>
             </div>
             <div className="footer-contact-item">

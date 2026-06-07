@@ -7,9 +7,10 @@ import {
 } from 'react-icons/fi';
 
 export const siteConfig = {
-  phone: '+974 7476 1025 ',
+  phone: '+974 7476 1025',
+  phone2: '+974 3088 3425',
   email: 'helpdesk@afis.qa',
-  whatsapp: '+97474761025',
+  whatsapp: '97474761025',
   hours: 'Mon - Sat 9:00 AM - 6:00 PM',
   currency: 'QAR',
   address: 'Al Asmakh St, Doha, Qatar'
@@ -94,12 +95,13 @@ export const brands = [
 ];
 
 export const clients = [
-  { id: 1, name: 'Outback Steaks' },
-  { id: 2, name: 'Lebanese Bakery' },
-  { id: 3, name: 'Bo's Coffee' },
-  { id: 4, name: 'Stormi ' },
-  { id: 5, name: 'Benji's Burger' },
-  { id: 6, name: 'Burger Burn' },
+  { id: 1, name: 'Outback steak house' },
+  { id: 2, name: "BO'S Coffee" },
+  { id: 3, name: "Benji's" },
+  { id: 4, name: 'Lebanese bakery' },
+  { id: 5, name: 'Burger barn' },
+  { id: 6, name: 'Dairy queen' },
+  { id: 7, name: 'LE MIU cafe' },
 ];
 
 export const whyChooseUsFeatures = [
