@@ -7,9 +7,9 @@ import {
 } from 'react-icons/fi';
 
 export const siteConfig = {
-  phone: '+974 4444 5555',
+  phone: '+974 7476 1025 ',
   email: 'helpdesk@afis.qa',
-  whatsapp: '97444445555',
+  whatsapp: '+97474761025',
   hours: 'Mon - Sat 9:00 AM - 6:00 PM',
   currency: 'QAR',
   address: 'Al Asmakh St, Doha, Qatar'
@@ -94,12 +94,12 @@ export const brands = [
 ];
 
 export const clients = [
-  { id: 1, name: 'Restaurant Group' },
-  { id: 2, name: 'RetailMart' },
-  { id: 3, name: 'HyperMarket' },
-  { id: 4, name: 'Viva Pharmacy' },
-  { id: 5, name: 'Electro World' },
-  { id: 6, name: 'Fashion Store' },
+  { id: 1, name: 'Outback Steaks' },
+  { id: 2, name: 'Lebanese Bakery' },
+  { id: 3, name: 'Bo's Coffee' },
+  { id: 4, name: 'Stormi ' },
+  { id: 5, name: 'Benji's Burger' },
+  { id: 6, name: 'Burger Burn' },
 ];
 
 export const whyChooseUsFeatures = [
