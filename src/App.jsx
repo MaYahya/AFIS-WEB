@@ -8,19 +8,23 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import RequestQuote from './pages/RequestQuote';
 
+import { CartProvider } from './context/CartContext';
+
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path="products" element={<Products />} />
-        <Route path="products/:id" element={<ProductDetail />} />
-        <Route path="software" element={<Software />} />
-        <Route path="about" element={<About />} />
-        <Route path="contact" element={<Contact />} />
-        <Route path="request-quote" element={<RequestQuote />} />
-      </Route>
-    </Routes>
+    <CartProvider>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="products" element={<Products />} />
+          <Route path="products/:id" element={<ProductDetail />} />
+          <Route path="software" element={<Software />} />
+          <Route path="about" element={<About />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="request-quote" element={<RequestQuote />} />
+        </Route>
+      </Routes>
+    </CartProvider>
   );
 }
 

@@ -1,37 +1,37 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { FiStar, FiMonitor, FiChevronRight, FiChevronLeft, FiFilter } from 'react-icons/fi';
+import { FiStar, FiMonitor, FiChevronRight, FiChevronLeft, FiFilter, FiPlus, FiTrash2 } from 'react-icons/fi';
 import { siteConfig, featuredProducts, categories } from '../data/siteData';
 import terminalImg from '../assets/terminal.png';
 import printerImg from '../assets/printer.png';
 import scannerImg from '../assets/scanner.png';
+import { useCart } from '../context/CartContext';
 import './Pages.css';
 
 const banners = [
   {
     id: 1,
-    title: 'Next-Gen POS Systems',
-    subtitle: 'Elevate your retail experience with our latest touch terminals.',
-    gradient: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)',
+    title: 'Modern POS Solutions',
+    subtitle: 'Streamline your retail or restaurant operations with the latest terminal hardware.',
+    gradient: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
+    image: terminalImg
   },
   {
     id: 2,
-    title: 'High-Speed Printing',
-    subtitle: 'Thermal receipt and label printers built for heavy traffic.',
+    title: 'Precision Printing',
+    subtitle: 'High-speed thermal and label printers for every business need.',
     gradient: 'linear-gradient(135deg, #0f172a 0%, #334155 100%)',
-  },
-  {
-    id: 3,
-    title: 'Precision Scanning',
-    subtitle: 'Capture barcodes instantly with our 1D/2D scanner solutions.',
-    gradient: 'linear-gradient(135deg, #047857 0%, #10b981 100%)',
+    image: printerImg
   }
 ];
 
 const Products = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
+  const { addToCart, removeFromCart, cartItems } = useCart();
   const activeCategory = searchParams.get('category') || 'all';
+
+  const isInCart = (productId) => cartItems.some(item => item.id === productId);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -78,6 +78,9 @@ const Products = () => {
                 <div className="banner-content">
                   <h2>{banner.title}</h2>
                   <p>{banner.subtitle}</p>
+                </div>
+                <div className="banner-image">
+                  <img src={banner.image} alt={banner.title} />
                 </div>
               </div>
             </div>
@@ -126,7 +129,7 @@ const Products = () => {
               {filteredProducts.map((product) => (
                 <div className="product-card" key={product.id}>
                   {product.badge && <span className="product-badge">{product.badge}</span>}
-                  <div className="product-image">
+                  <Link to={`/products/${product.id}`} className="product-image">
                     {product.id === 1 && <img src={terminalImg} alt={product.name} />}
                     {product.id === 2 && <img src={printerImg} alt={product.name} />}
                     {product.id === 3 && <img src={scannerImg} alt={product.name} />}
@@ -135,9 +138,11 @@ const Products = () => {
                         <FiMonitor size={32} />
                       </div>
                     )}
-                  </div>
+                  </Link>
                   <span className="product-brand">{product.brand}</span>
-                  <h3>{product.name}</h3>
+                  <Link to={`/products/${product.id}`}>
+                    <h3>{product.name}</h3>
+                  </Link>
                   <p className="product-desc">{product.description}</p>
                   <div className="product-price">
                     <span className="currency">{siteConfig.currency}</span> {product.price}
@@ -148,9 +153,19 @@ const Products = () => {
                       <span>{product.rating}</span>
                       <span>({product.reviews})</span>
                     </div>
-                    <Link to={`/products/${product.id}`} className="product-view-btn">
-                      View Details
-                    </Link>
+                    {isInCart(product.id) ? (
+                      <button 
+                        className="product-view-btn" 
+                        onClick={() => removeFromCart(product.id)}
+                        style={{ borderColor: '#ef4444', color: '#ef4444' }}
+                      >
+                       <FiTrash2 size={14} /> Remove
+                      </button>
+                    ) : (
+                      <button className="product-view-btn" onClick={() => addToCart({ ...product, price: product.price.toString() })}>
+                        <FiPlus size={14} /> Add to Cart
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}

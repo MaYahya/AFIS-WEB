@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { FiStar, FiChevronRight, FiChevronLeft, FiFilter, FiMonitor } from 'react-icons/fi';
+import { FiStar, FiChevronRight, FiChevronLeft, FiFilter, FiMonitor, FiPlus, FiTrash2 } from 'react-icons/fi';
 import { siteConfig } from '../data/siteData';
+import { useCart } from '../context/CartContext';
 import './Pages.css';
 
 const banners = [
@@ -39,7 +40,10 @@ const softwareCategories = [
 const Software = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
+  const { addToCart, removeFromCart, cartItems } = useCart();
   const activeCategory = searchParams.get('category') || 'all';
+
+  const isInCart = (productId) => cartItems.some(item => item.id === productId);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -124,7 +128,7 @@ const Software = () => {
                   {product.badge && <span className="product-badge">{product.badge}</span>}
                   
                   {/* Distinct Software Image Placeholder */}
-                  <div className="product-image" style={{ background: '#f8fafc', padding: '24px' }}>
+                  <Link to={`/products/${product.id}`} className="product-image" style={{ background: '#f8fafc', padding: '24px', textDecoration: 'none' }}>
                     <div className="product-image-placeholder" style={{ 
                       width: '100%', height: '160px', 
                       background: 'var(--primary-light)', 
@@ -138,10 +142,12 @@ const Software = () => {
                     }}>
                       {product.icon}
                     </div>
-                  </div>
+                  </Link>
 
                   <span className="product-brand">{product.brand}</span>
-                  <h3>{product.name}</h3>
+                  <Link to={`/products/${product.id}`}>
+                    <h3>{product.name}</h3>
+                  </Link>
                   <p className="product-desc">{product.description}</p>
                   <div className="product-price">
                     <span className="currency">{siteConfig.currency}</span> {product.price}
@@ -152,9 +158,19 @@ const Software = () => {
                       <span>{product.rating}</span>
                       <span>({product.reviews})</span>
                     </div>
-                    <button className="product-view-btn" onClick={() => alert('Add to details/cart logic')}>
-                      View Details
-                    </button>
+                    {isInCart(product.id) ? (
+                      <button 
+                        className="product-view-btn" 
+                        onClick={() => removeFromCart(product.id)}
+                        style={{ borderColor: '#ef4444', color: '#ef4444' }}
+                      >
+                       <FiTrash2 size={14} /> Remove
+                      </button>
+                    ) : (
+                      <button className="product-view-btn" onClick={() => addToCart(product)}>
+                        <FiPlus size={14} /> Add to Cart
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}

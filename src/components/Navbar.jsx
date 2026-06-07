@@ -1,14 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FiMenu, FiX, FiChevronDown, FiArrowRight } from 'react-icons/fi';
+import { FiMenu, FiX, FiChevronDown, FiArrowRight, FiShoppingCart } from 'react-icons/fi';
 import { navLinks } from '../data/siteData';
 import logoImg from '../assets/logo.png';
+import { useCart } from '../context/CartContext';
+import CartDrawer from './cart/CartDrawer';
 import './Navbar.css';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
   const [mobileSubmenu, setMobileSubmenu] = useState(null);
+  const { cartCount } = useCart();
   const location = useLocation();
 
   useEffect(() => {
@@ -57,19 +61,26 @@ const Navbar = () => {
           )}
         </div>
 
-        <div className="nav-cta">
-          <Link to="/request-quote" className="btn btn-primary">
-            Get a Quote <FiArrowRight size={16} />
-          </Link>
-        </div>
+        <div className="nav-actions">
+          <div className="nav-cta desktop-only">
+            <Link to="/request-quote" className="btn btn-primary">
+              Get a Quote <FiArrowRight size={16} />
+            </Link>
+          </div>
 
-        <button
-          className="nav-hamburger"
-          onClick={() => setMobileOpen(true)}
-          aria-label="Open menu"
-        >
-          <FiMenu />
-        </button>
+          <button className="nav-cart-btn" onClick={() => setCartOpen(true)} aria-label="Open cart">
+            <FiShoppingCart />
+            {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+          </button>
+
+          <button
+            className="nav-hamburger"
+            onClick={() => setMobileOpen(true)}
+            aria-label="Open menu"
+          >
+            <FiMenu />
+          </button>
+        </div>
       </div>
 
       {/* Mobile Overlay */}
@@ -127,6 +138,8 @@ const Navbar = () => {
           </Link>
         </div>
       </div>
+
+      <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
     </nav>
   );
 };
