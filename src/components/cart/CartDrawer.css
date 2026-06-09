@@ -24,7 +24,7 @@
   right: -420px;
   width: 100%;
   max-width: 420px;
-  height: 100vh;
+  height: var(--vh, 100vh);
   background: var(--white);
   z-index: 1200;
   transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);

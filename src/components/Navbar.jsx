@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FiMenu, FiX, FiChevronDown, FiArrowRight, FiShoppingCart } from 'react-icons/fi';
-import { navLinks } from '../data/siteData';
-import logoImg from '../assets/logo.png';
+import { FiChevronDown, FiShoppingCart, FiMenu, FiX, FiArrowRight } from 'react-icons/fi';
+import { useSiteData } from '../context/SiteContext';
 import { useCart } from '../context/CartContext';
 import CartDrawer from './cart/CartDrawer';
+import { navLinks as baseNavLinks } from '../data/siteData';
+import logoImg from '../assets/logo.png';
 import './Navbar.css';
 
 const Navbar = () => {
+  const { categories, loading } = useSiteData();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
@@ -26,6 +28,27 @@ const Navbar = () => {
     setMobileSubmenu(null);
   }, [location]);
 
+  // Dynamically build navigation links based on backend categories
+  const dynamicNavLinks = baseNavLinks.map(link => {
+    if (link.name === 'Products') {
+      return {
+        ...link,
+        submenu: categories
+          .filter(cat => cat.type === 'product')
+          .map(cat => ({ name: cat.name, path: `/products?category=${cat.slug}` }))
+      };
+    }
+    if (link.name === 'Software') {
+      return {
+        ...link,
+        submenu: categories
+          .filter(cat => cat.type === 'software')
+          .map(cat => ({ name: cat.name, path: `/software?category=${cat.slug}` }))
+      };
+    }
+    return link;
+  });
+
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="container">
@@ -34,8 +57,8 @@ const Navbar = () => {
         </Link>
 
         <div className="nav-links">
-          {navLinks.map((link) =>
-            link.submenu ? (
+          {dynamicNavLinks.map((link) =>
+            link.submenu && link.submenu.length > 0 ? (
               <div className="nav-dropdown" key={link.name}>
                 <Link
                   to={link.path}
@@ -105,8 +128,8 @@ const Navbar = () => {
         </div>
 
         <div className="nav-mobile-links">
-          {navLinks.map((link) =>
-            link.submenu ? (
+          {dynamicNavLinks.map((link) =>
+            link.submenu && link.submenu.length > 0 ? (
               <div key={link.name}>
                 <button onClick={() => setMobileSubmenu(mobileSubmenu === link.name ? null : link.name)}>
                   {link.name}

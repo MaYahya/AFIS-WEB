@@ -1,59 +1,39 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { FiStar, FiChevronRight, FiChevronLeft, FiFilter, FiMonitor, FiPlus, FiTrash2 } from 'react-icons/fi';
-import { siteConfig } from '../data/siteData';
 import { useCart } from '../context/CartContext';
+import { useSiteData } from '../context/SiteContext';
+import { getImageUrl } from '../services/api';
+import heroProduct from '../assets/hero1.png';
 import './Pages.css';
 
-const banners = [
-  {
-    id: 1,
-    title: 'Enterprise Software Solutions',
-    subtitle: 'Power your business with industry-standard POS engines and security tools.',
-    gradient: 'linear-gradient(135deg, #1e293b 0%, #334155 100%)',
-  },
-  {
-    id: 2,
-    title: 'Genuine System Licenses',
-    subtitle: 'Secure, permanent OS & Office licenses for your workspace.',
-    gradient: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
-  }
-];
 
-const softwareProducts = [
-  { id: 101, name: 'Totem POS Software', description: 'Advanced Point of Sale software optimized for retail and restaurants.', price: '1,500', rating: 4.8, reviews: 124, brand: 'Totem', badge: 'Best Seller', icon: 'POS', categorySlug: 'pos' },
-  { id: 102, name: 'Totem Inventory Manager', description: 'Comprehensive stock and warehouse multi-location management.', price: '2,200', rating: 4.9, reviews: 89, brand: 'Totem', icon: 'INV', categorySlug: 'pos' },
-  { id: 103, name: 'Windows 11 Professional', description: 'Genuine permanent license key for business workstations.', price: '650', rating: 4.7, reviews: 312, brand: 'Microsoft', icon: 'WIN', categorySlug: 'os' },
-  { id: 104, name: 'Microsoft Office 2021', description: 'Lifetime license for Word, Excel, PowerPoint, and Outlook.', price: '850', rating: 4.5, reviews: 204, brand: 'Microsoft', icon: 'OFF', categorySlug: 'productivity' },
-  { id: 105, name: 'Kaspersky Endpoint Security', description: 'Enterprise-grade antivirus and network protection.', price: '300 / yr', rating: 4.6, reviews: 156, brand: 'Kaspersky', icon: 'SEC', categorySlug: 'security' },
-  { id: 106, name: 'Tally Prime Gold', description: 'High-performance multi-user accounting and compliance software.', price: '3,500', rating: 4.8, reviews: 78, brand: 'Tally Solutions', icon: 'ACC', categorySlug: 'accounting' },
-];
-
-const softwareCategories = [
-  { id: 1, name: 'POS & Retail', slug: 'pos' },
-  { id: 2, name: 'Operating Systems', slug: 'os' },
-  { id: 3, name: 'Productivity', slug: 'productivity' },
-  { id: 4, name: 'Security', slug: 'security' },
-  { id: 5, name: 'Accounting', slug: 'accounting' },
-];
 
 const Software = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const { allProducts, categories, banners: allBanners, config, loading } = useSiteData();
   const [searchParams, setSearchParams] = useSearchParams();
   const { addToCart, removeFromCart, cartItems } = useCart();
   const activeCategory = searchParams.get('category') || 'all';
+  const [currentSlide, setCurrentSlide] = useState(0);
 
-  const isInCart = (productId) => cartItems.some(item => item.id === productId);
+  // Filter banners for the software page
+  const pageBanners = allBanners.filter(b => b.page === 'software');
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % banners.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
+    if (pageBanners.length > 1) {
+      const timer = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % pageBanners.length);
+      }, 5000);
+      return () => clearInterval(timer);
+    }
+  }, [pageBanners.length]);
 
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % banners.length);
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length);
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % pageBanners.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + pageBanners.length) % pageBanners.length);
+
+  if (loading) return <div className="loading-state">Loading software...</div>;
+
+  const isInCart = (productId) => cartItems.some(item => item.id === productId);
 
   const handleCategoryChange = (slug) => {
     if (slug === 'all') {
@@ -63,36 +43,49 @@ const Software = () => {
     }
   };
 
+  // Only show software categories in sidebar
+  const swCategories = categories.filter(cat => cat.type === 'software');
+
+  // Filter products by software category
   const filteredProducts = activeCategory === 'all' 
-    ? softwareProducts 
-    : softwareProducts.filter(p => p.categorySlug === activeCategory);
+    ? allProducts.filter(p => !p.category || p.category.type === 'software') 
+    : allProducts.filter(p => p.category?.slug === activeCategory);
 
   return (
     <div className="page-wrapper">
-      {/* Landscape Sliding Banner */}
-      <div className="products-banner-wrapper">
-        <div className="products-banner-slider" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
-          {banners.map((banner) => (
-            <div className="products-banner-slide" key={banner.id} style={{ background: banner.gradient }}>
-              <div className="container">
-                <div className="banner-content">
-                  <h2>{banner.title}</h2>
-                  <p>{banner.subtitle}</p>
+      {/* Dynamic Landscape Banner */}
+      {pageBanners.length > 0 && (
+        <div className="products-banner-wrapper">
+          <div className="products-banner-slider" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+            {pageBanners.map((banner) => (
+              <div className="products-banner-slide" key={banner.id}>
+                <div className="container">
+                  <div className="banner-content">
+                    <h2>{banner.title}</h2>
+                    <p>{banner.subtitle}</p>
+                  </div>
+                  <div className="banner-image">
+                    <img src={banner.image ? getImageUrl(banner.image) : heroProduct} alt={banner.title} />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          {pageBanners.length > 1 && (
+            <>
+              <button className="slider-btn prev" onClick={prevSlide}><FiChevronLeft size={24} /></button>
+              <button className="slider-btn next" onClick={nextSlide}><FiChevronRight size={24} /></button>
+              <div className="slider-dots">
+                {pageBanners.map((_, idx) => (
+                  <button key={idx} className={`slider-dot ${currentSlide === idx ? 'active' : ''}`} onClick={() => setCurrentSlide(idx)} />
+                ))}
+              </div>
+            </>
+          )}
         </div>
-        <button className="slider-btn prev" onClick={prevSlide}><FiChevronLeft size={24} /></button>
-        <button className="slider-btn next" onClick={nextSlide}><FiChevronRight size={24} /></button>
-        <div className="slider-dots">
-          {banners.map((_, idx) => (
-            <button key={idx} className={`slider-dot ${currentSlide === idx ? 'active' : ''}`} onClick={() => setCurrentSlide(idx)} />
-          ))}
-        </div>
-      </div>
+      )}
 
-      <div className="container page-content">
+      <div className="container page-content" style={{ paddingTop: pageBanners.length > 0 ? '40px' : '120px' }}>
         <div className="products-layout">
           {/* Sidebar */}
           <aside className="products-sidebar">
@@ -104,7 +97,7 @@ const Software = () => {
                     All Software
                   </button>
                 </li>
-                {softwareCategories.map((cat) => (
+                {swCategories.map((cat) => (
                   <li key={cat.id}>
                     <button className={activeCategory === cat.slug ? 'active' : ''} onClick={() => handleCategoryChange(cat.slug)}>
                       {cat.name}
@@ -123,25 +116,29 @@ const Software = () => {
             </div>
 
             <div className="page-grid">
-              {filteredProducts.map((product) => (
+              {filteredProducts.length > 0 ? filteredProducts.map((product) => (
                 <div className="product-card" key={product.id}>
                   {product.badge && <span className="product-badge">{product.badge}</span>}
                   
                   {/* Distinct Software Image Placeholder */}
                   <Link to={`/products/${product.id}`} className="product-image" style={{ background: '#f8fafc', padding: '24px', textDecoration: 'none' }}>
-                    <div className="product-image-placeholder" style={{ 
-                      width: '100%', height: '160px', 
-                      background: 'var(--primary-light)', 
-                      borderRadius: '12px', 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      justifyContent: 'center',
-                      color: 'var(--primary)',
-                      fontSize: '32px',
-                      fontWeight: '800'
-                    }}>
-                      {product.icon}
-                    </div>
+                    {product.image ? (
+                        <img src={getImageUrl(product.image)} alt={product.name} style={{ width: '100%', height: '160px', objectFit: 'contain' }} />
+                    ) : (
+                        <div className="product-image-placeholder" style={{ 
+                        width: '100%', height: '160px', 
+                        background: 'var(--primary-light)', 
+                        borderRadius: '12px', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center',
+                        color: 'var(--primary)',
+                        fontSize: '32px',
+                        fontWeight: '800'
+                        }}>
+                        {product.name.charAt(0)}
+                        </div>
+                    )}
                   </Link>
 
                   <span className="product-brand">{product.brand}</span>
@@ -150,30 +147,32 @@ const Software = () => {
                   </Link>
                   <p className="product-desc">{product.description}</p>
                   <div className="product-price">
-                    <span className="currency">{siteConfig.currency}</span> {product.price}
+                    <span className="currency">{config.currency}</span> {product.price}
                   </div>
                   <div className="product-meta">
                     <div className="product-rating">
                       <FiStar className="star" size={14} />
-                      <span>{product.rating}</span>
-                      <span>({product.reviews})</span>
+                      <span>{product.rating || '5.0'}</span>
                     </div>
                     {isInCart(product.id) ? (
                       <button 
                         className="product-view-btn" 
-                        onClick={() => removeFromCart(product.id)}
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); removeFromCart(product.id); }}
                         style={{ borderColor: '#ef4444', color: '#ef4444' }}
                       >
                        <FiTrash2 size={14} /> Remove
                       </button>
                     ) : (
-                      <button className="product-view-btn" onClick={() => addToCart(product)}>
+                      <button className="product-view-btn" type="button" onClick={(e) => { e.stopPropagation(); addToCart(product); }}>
                         <FiPlus size={14} /> Add to Cart
                       </button>
                     )}
                   </div>
                 </div>
-              ))}
+              )) : (
+                <div className="no-products-msg">No software found for this category.</div>
+              )}
             </div>
           </main>
         </div>

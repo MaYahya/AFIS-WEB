@@ -9,18 +9,20 @@
   border-radius: var(--radius-xl);
   padding: 28px 20px;
   text-align: center;
-  transition: var(--transition);
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease, border-color 0.4s ease;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 14px;
+  transform-style: preserve-3d;
+  perspective: 800px;
 }
 
 .industry-card:hover {
   border-color: var(--primary);
-  box-shadow: 0 8px 30px rgba(0, 102, 255, 0.1);
-  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 102, 255, 0.15);
+  transform: perspective(800px) rotateX(-2deg) rotateY(2deg) translateZ(8px) translateY(-4px);
 }
 
 .industry-icon {
@@ -33,12 +35,13 @@
   justify-content: center;
   color: var(--primary);
   font-size: 24px;
-  transition: var(--transition);
+  transition: transform 0.4s ease, background 0.3s ease, color 0.3s ease;
 }
 
 .industry-card:hover .industry-icon {
   background: var(--primary);
   color: var(--white);
+  transform: perspective(800px) translateZ(20px) scale(1.15);
 }
 
 .industry-card h3 {
@@ -57,17 +60,19 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
   padding: 28px 24px;
-  transition: var(--transition);
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease, border-color 0.4s ease;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 16px;
+  transform-style: preserve-3d;
+  perspective: 800px;
 }
 
 .service-card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-6px);
+  box-shadow: 0 16px 48px rgba(15, 23, 42, 0.1);
+  transform: perspective(800px) rotateX(-2deg) rotateY(2deg) translateZ(15px) translateY(-4px);
   border-color: transparent;
 }
 
@@ -81,12 +86,13 @@
   justify-content: center;
   color: var(--primary);
   font-size: 24px;
-  transition: var(--transition);
+  transition: transform 0.4s ease, background 0.3s ease, color 0.3s ease;
 }
 
 .service-card:hover .service-icon {
   background: var(--primary);
   color: var(--white);
+  transform: perspective(800px) translateZ(25px) scale(1.15);
 }
 
 .service-card h3 {
@@ -125,12 +131,14 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
   padding: 28px;
-  transition: var(--transition);
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+  transform-style: preserve-3d;
+  perspective: 800px;
 }
 
 .testimonial-card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-4px);
+  box-shadow: 0 14px 45px rgba(15, 23, 42, 0.1);
+  transform: perspective(800px) rotateX(-2deg) rotateY(2deg) translateZ(5px) translateY(-4px);
 }
 
 .testimonial-stars {

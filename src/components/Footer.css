@@ -24,7 +24,13 @@
 }
 
 .footer-brand {
-  max-width: 300px;
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .footer-brand {
+    max-width: 300px;
+  }
 }
 
 .footer-brand .navbar-logo {

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FiMonitor, FiPrinter, FiMaximize, FiBox, FiTag, FiCpu } from 'react-icons/fi';
-import { categories } from '../../data/siteData';
+import { useSiteData } from '../../context/SiteContext';
 import './ProductSections.css';
 
 const iconMap = {
@@ -13,6 +13,13 @@ const iconMap = {
 };
 
 const CategoryGrid = () => {
+  const { categories, loading } = useSiteData();
+
+  if (loading) return null;
+
+  // Only show hardware/product categories in this grid
+  const productCategories = categories.filter(cat => cat.type === 'product');
+
   return (
     <section className="section categories-section">
       <div className="container">
@@ -22,7 +29,7 @@ const CategoryGrid = () => {
           <p>Find the perfect hardware for your business needs</p>
         </div>
         <div className="grid-categories">
-          {categories.map((cat) => {
+          {productCategories.map((cat) => {
             const Icon = iconMap[cat.icon] || FiMonitor;
             return (
               <Link to={`/products?category=${cat.slug}`} className="category-card" key={cat.id}>

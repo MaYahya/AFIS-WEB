@@ -68,17 +68,25 @@
 }
 
 @media (max-width: 768px) {
-  .top-header-left a span,
-  .top-header-hours span,
-  .top-header-right {
-    display: none;
+  .top-header {
+    height: auto;
+    padding: 6px 0;
   }
   .top-header-left {
     width: 100%;
     justify-content: center;
-    gap: 16px;
+    gap: 10px;
+    flex-wrap: wrap;
   }
   .top-header-left a span {
+    font-size: 11px;
+  }
+  .top-header-left .phone-separator,
+  .top-header-hours,
+  .top-header-right {
     display: none;
+  }
+  .top-header-left a {
+    font-size: 11px;
   }
 }

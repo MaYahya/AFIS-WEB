@@ -5,7 +5,6 @@ import BrandsMarquee from '../components/home/BrandsMarquee';
 import HappyClients from '../components/home/HappyClients';
 import WhyChooseUs from '../components/home/WhyChooseUs';
 import TotemPOS from '../components/home/TotemPOS';
-import IndustriesWeServe from '../components/home/IndustriesWeServe';
 import ServicesSection from '../components/home/ServicesSection';
 import Testimonials from '../components/home/Testimonials';
 import InquiryForm from '../components/home/InquiryForm';
@@ -21,7 +20,6 @@ const Home = () => {
       <WhyChooseUs />
       <TotemPOS />
       <BrandsMarquee />
-      <IndustriesWeServe />
       <ServicesSection />
       <Testimonials />
       <InquiryForm />

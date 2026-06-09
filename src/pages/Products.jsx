@@ -1,47 +1,37 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { FiStar, FiMonitor, FiChevronRight, FiChevronLeft, FiFilter, FiPlus, FiTrash2 } from 'react-icons/fi';
-import { siteConfig, featuredProducts, categories } from '../data/siteData';
-import terminalImg from '../assets/terminal.png';
-import printerImg from '../assets/printer.png';
-import scannerImg from '../assets/scanner.png';
 import { useCart } from '../context/CartContext';
+import { useSiteData } from '../context/SiteContext';
+import { getImageUrl } from '../services/api';
+import heroProduct from '../assets/hero1.png';
 import './Pages.css';
 
-const banners = [
-  {
-    id: 1,
-    title: 'Modern POS Solutions',
-    subtitle: 'Streamline your retail or restaurant operations with the latest terminal hardware.',
-    gradient: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
-    image: terminalImg
-  },
-  {
-    id: 2,
-    title: 'Precision Printing',
-    subtitle: 'High-speed thermal and label printers for every business need.',
-    gradient: 'linear-gradient(135deg, #0f172a 0%, #334155 100%)',
-    image: printerImg
-  }
-];
-
 const Products = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const { allProducts, categories, banners: allBanners, config, loading } = useSiteData();
   const [searchParams, setSearchParams] = useSearchParams();
   const { addToCart, removeFromCart, cartItems } = useCart();
   const activeCategory = searchParams.get('category') || 'all';
+  const [currentSlide, setCurrentSlide] = useState(0);
 
-  const isInCart = (productId) => cartItems.some(item => item.id === productId);
+  // Filter banners for the products page
+  const pageBanners = allBanners.filter(b => b.page === 'products');
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % banners.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
+    if (pageBanners.length > 1) {
+      const timer = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % pageBanners.length);
+      }, 5000);
+      return () => clearInterval(timer);
+    }
+  }, [pageBanners.length]);
 
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % banners.length);
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length);
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % pageBanners.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + pageBanners.length) % pageBanners.length);
+
+  if (loading) return <div className="loading-state">Loading products...</div>;
+
+  const isInCart = (productId) => cartItems.some(item => item.id === productId);
 
   const handleCategoryChange = (slug) => {
     if (slug === 'all') {
@@ -51,51 +41,49 @@ const Products = () => {
     }
   };
 
-  // Extend mock products for a fuller grid
-  const allProducts = [
-    { ...featuredProducts[0], categorySlug: 'pos-systems' },
-    { ...featuredProducts[1], categorySlug: 'receipt-printers' },
-    { ...featuredProducts[2], categorySlug: 'barcode-scanners' },
-    { ...featuredProducts[3], categorySlug: 'cash-drawers' },
-    { ...featuredProducts[4], categorySlug: 'label-printers' },
-    { id: 6, name: 'EPSON TM-U220', description: 'Dot Matrix Kitchen Printer', price: '950', rating: 4.4, reviews: 21, brand: 'EPSON', categorySlug: 'receipt-printers' },
-    { id: 7, name: 'SUNMI V2 Pro', description: 'Mobile Handheld POS', price: '1,200', rating: 4.9, reviews: 67, badge: 'New', brand: 'SUNMI', categorySlug: 'pos-systems' },
-    { id: 8, name: 'Zebra DS2208', description: '2D Handheld Imager Scanner', price: '520', rating: 4.6, reviews: 34, brand: 'Zebra', categorySlug: 'barcode-scanners' },
-  ];
+  // Only show hardware/product categories in sidebar
+  const productCategories = categories.filter(cat => cat.type === 'product');
 
+  // Filter products by category
   const filteredProducts = activeCategory === 'all' 
-    ? allProducts 
-    : allProducts.filter(p => p.categorySlug === activeCategory);
+    ? allProducts.filter(p => !p.category || p.category.type === 'product') 
+    : allProducts.filter(p => p.category?.slug === activeCategory);
 
   return (
     <div className="page-wrapper">
-      {/* Landscape Sliding Banner */}
-      <div className="products-banner-wrapper">
-        <div className="products-banner-slider" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
-          {banners.map((banner) => (
-            <div className="products-banner-slide" key={banner.id} style={{ background: banner.gradient }}>
-              <div className="container">
-                <div className="banner-content">
-                  <h2>{banner.title}</h2>
-                  <p>{banner.subtitle}</p>
-                </div>
-                <div className="banner-image">
-                  <img src={banner.image} alt={banner.title} />
+      {/* Dynamic Landscape Banner */}
+      {pageBanners.length > 0 && (
+        <div className="products-banner-wrapper">
+          <div className="products-banner-slider" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+            {pageBanners.map((banner) => (
+              <div className="products-banner-slide" key={banner.id}>
+                <div className="container">
+                  <div className="banner-content">
+                    <h2>{banner.title}</h2>
+                    <p>{banner.subtitle}</p>
+                  </div>
+                  <div className="banner-image">
+                    <img src={banner.image ? getImageUrl(banner.image) : heroProduct} alt={banner.title} />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          {pageBanners.length > 1 && (
+            <>
+              <button className="slider-btn prev" onClick={prevSlide}><FiChevronLeft size={24} /></button>
+              <button className="slider-btn next" onClick={nextSlide}><FiChevronRight size={24} /></button>
+              <div className="slider-dots">
+                {pageBanners.map((_, idx) => (
+                  <button key={idx} className={`slider-dot ${currentSlide === idx ? 'active' : ''}`} onClick={() => setCurrentSlide(idx)} />
+                ))}
+              </div>
+            </>
+          )}
         </div>
-        <button className="slider-btn prev" onClick={prevSlide}><FiChevronLeft size={24} /></button>
-        <button className="slider-btn next" onClick={nextSlide}><FiChevronRight size={24} /></button>
-        <div className="slider-dots">
-          {banners.map((_, idx) => (
-            <button key={idx} className={`slider-dot ${currentSlide === idx ? 'active' : ''}`} onClick={() => setCurrentSlide(idx)} />
-          ))}
-        </div>
-      </div>
+      )}
 
-      <div className="container page-content">
+      <div className="container page-content" style={{ paddingTop: pageBanners.length > 0 ? '40px' : '120px' }}>
         <div className="products-layout">
           {/* Sidebar */}
           <aside className="products-sidebar">
@@ -107,7 +95,7 @@ const Products = () => {
                     All Products
                   </button>
                 </li>
-                {categories.map((cat) => (
+                {productCategories.map((cat) => (
                   <li key={cat.id}>
                     <button className={activeCategory === cat.slug ? 'active' : ''} onClick={() => handleCategoryChange(cat.slug)}>
                       {cat.name}
@@ -126,14 +114,13 @@ const Products = () => {
             </div>
 
             <div className="page-grid">
-              {filteredProducts.map((product) => (
+              {filteredProducts.length > 0 ? filteredProducts.map((product) => (
                 <div className="product-card" key={product.id}>
                   {product.badge && <span className="product-badge">{product.badge}</span>}
                   <Link to={`/products/${product.id}`} className="product-image">
-                    {product.id === 1 && <img src={terminalImg} alt={product.name} />}
-                    {product.id === 2 && <img src={printerImg} alt={product.name} />}
-                    {product.id === 3 && <img src={scannerImg} alt={product.name} />}
-                    {product.id > 3 && (
+                    {product.image ? (
+                      <img src={getImageUrl(product.image)} alt={product.name} />
+                    ) : (
                       <div className="product-image-placeholder">
                         <FiMonitor size={32} />
                       </div>
@@ -145,30 +132,32 @@ const Products = () => {
                   </Link>
                   <p className="product-desc">{product.description}</p>
                   <div className="product-price">
-                    <span className="currency">{siteConfig.currency}</span> {product.price}
+                    <span className="currency">{config.currency}</span> {product.price}
                   </div>
                   <div className="product-meta">
                     <div className="product-rating">
                       <FiStar className="star" size={14} />
-                      <span>{product.rating}</span>
-                      <span>({product.reviews})</span>
+                      <span>{product.rating || '5.0'}</span>
                     </div>
                     {isInCart(product.id) ? (
                       <button 
                         className="product-view-btn" 
-                        onClick={() => removeFromCart(product.id)}
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); removeFromCart(product.id); }}
                         style={{ borderColor: '#ef4444', color: '#ef4444' }}
                       >
                        <FiTrash2 size={14} /> Remove
                       </button>
                     ) : (
-                      <button className="product-view-btn" onClick={() => addToCart({ ...product, price: product.price.toString() })}>
+                      <button className="product-view-btn" type="button" onClick={(e) => { e.stopPropagation(); addToCart(product); }}>
                         <FiPlus size={14} /> Add to Cart
                       </button>
                     )}
                   </div>
                 </div>
-              ))}
+              )) : (
+                <div className="no-products-msg">No products found for this category.</div>
+              )}
             </div>
           </main>
         </div>

@@ -15,6 +15,7 @@
   height: 600px;
   background: rgba(255,255,255,0.03);
   border-radius: 50%;
+  pointer-events: none;
 }
 
 .why-section::after {
@@ -26,6 +27,18 @@
   height: 400px;
   background: rgba(255,255,255,0.02);
   border-radius: 50%;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .why-section::before {
+    width: 300px;
+    height: 300px;
+  }
+  .why-section::after {
+    width: 200px;
+    height: 200px;
+  }
 }
 
 .why-grid {
@@ -114,12 +127,26 @@
   padding: 28px 20px;
   text-align: center;
   backdrop-filter: blur(5px);
-  transition: var(--transition);
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), background 0.3s ease;
+  transform-style: preserve-3d;
+  perspective: 600px;
 }
 
 .stat-card:hover {
   background: rgba(255,255,255,0.15);
-  transform: translateY(-4px);
+  transform: perspective(600px) rotateX(-3deg) rotateY(3deg) translateZ(10px) translateY(-4px);
+}
+
+.stat-card:nth-child(2):hover {
+  transform: perspective(600px) rotateX(2deg) rotateY(-3deg) translateZ(10px) translateY(-4px);
+}
+
+.stat-card:nth-child(3):hover {
+  transform: perspective(600px) rotateX(-2deg) rotateY(-2deg) translateZ(10px) translateY(-4px);
+}
+
+.stat-card:nth-child(4):hover {
+  transform: perspective(600px) rotateX(3deg) rotateY(2deg) translateZ(10px) translateY(-4px);
 }
 
 .stat-value {

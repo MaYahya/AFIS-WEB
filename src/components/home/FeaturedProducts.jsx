@@ -1,14 +1,15 @@
 import { Link } from 'react-router-dom';
-import { FiStar, FiArrowRight, FiMonitor, FiPlus, FiTrash2 } from 'react-icons/fi';
-import { featuredProducts, siteConfig } from '../../data/siteData';
-import terminalImg from '../../assets/terminal.png';
-import printerImg from '../../assets/printer.png';
-import scannerImg from '../../assets/scanner.png';
+import { FiArrowRight, FiStar, FiMonitor, FiPlus, FiTrash2 } from 'react-icons/fi';
+import { useSiteData } from '../../context/SiteContext';
+import { getImageUrl } from '../../services/api';
 import { useCart } from '../../context/CartContext';
 import './ProductSections.css';
 
 const FeaturedProducts = () => {
+  const { featuredProducts, config, loading } = useSiteData();
   const { addToCart, removeFromCart, cartItems } = useCart();
+
+  if (loading) return null;
 
   const isInCart = (productId) => cartItems.some(item => item.id === productId);
 
@@ -25,14 +26,13 @@ const FeaturedProducts = () => {
           </Link>
         </div>
         <div className="grid-products">
-          {featuredProducts.map((product) => (
+          {featuredProducts.length > 0 ? featuredProducts.map((product) => (
             <div className="product-card" key={product.id}>
               {product.badge && <span className="product-badge">{product.badge}</span>}
               <Link to={`/products/${product.id}`} className="product-image">
-                {product.id === 1 && <img src={terminalImg} alt={product.name} />}
-                {product.id === 2 && <img src={printerImg} alt={product.name} />}
-                {product.id === 3 && <img src={scannerImg} alt={product.name} />}
-                {product.id > 3 && (
+                {product.image ? (
+                  <img src={getImageUrl(product.image)} alt={product.name} />
+                ) : (
                   <div className="product-image-placeholder">
                     <FiMonitor size={32} />
                   </div>
@@ -44,30 +44,32 @@ const FeaturedProducts = () => {
               </Link>
               <p className="product-desc">{product.description}</p>
               <div className="product-price">
-                <span className="currency">{siteConfig.currency}</span> {product.price}
+                <span className="currency">{config.currency}</span> {product.price}
               </div>
               <div className="product-meta">
                 <div className="product-rating">
                   <FiStar className="star" size={14} />
-                  <span>{product.rating}</span>
-                  <span>({product.reviews})</span>
+                  <span>{product.rating || '5.0'}</span>
                 </div>
                 {isInCart(product.id) ? (
                   <button 
                     className="product-view-btn remove-btn" 
-                    onClick={() => removeFromCart(product.id)}
+                    type="button"
+                    onClick={(e) => { e.stopPropagation(); removeFromCart(product.id); }}
                     style={{ borderColor: '#ef4444', color: '#ef4444' }}
                   >
                    <FiTrash2 size={14} /> Remove
                   </button>
                 ) : (
-                  <button className="product-view-btn" onClick={() => addToCart(product)}>
+                  <button className="product-view-btn" type="button" onClick={(e) => { e.stopPropagation(); addToCart(product); }}>
                     <FiPlus size={14} /> Add to Cart
                   </button>
                 )}
               </div>
             </div>
-          ))}
+          )) : (
+            <div className="no-products-msg">No featured products found.</div>
+          )}
         </div>
       </div>
     </section>

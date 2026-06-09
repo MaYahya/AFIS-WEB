@@ -1,41 +1,34 @@
 import { Link, useParams } from 'react-router-dom';
-import { FiPackage, FiArrowLeft, FiPlus, FiTrash2, FiStar, FiChevronRight } from 'react-icons/fi';
-import { featuredProducts, siteConfig } from '../data/siteData';
+import { FiPackage, FiPlus, FiTrash2, FiStar, FiChevronRight } from 'react-icons/fi';
 import { useCart } from '../context/CartContext';
-import terminalImg from '../assets/terminal.png';
-import printerImg from '../assets/printer.png';
-import scannerImg from '../assets/scanner.png';
+import { useSiteData } from '../context/SiteContext';
+import { getImageUrl } from '../services/api';
 import './Pages.css';
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const { allProducts, config, loading } = useSiteData();
   const { addToCart, removeFromCart, cartItems } = useCart();
   
-  // Find product from mock data
-  const product = featuredProducts.find(p => p.id === parseInt(id)) || {
-    id: parseInt(id),
-    name: 'Standard POS Hardware',
-    brand: 'AFIS',
-    price: '1,000',
-    description: 'High-performance hardware designed for reliability and speed in modern business environments.',
-    rating: 4.5,
-    reviews: 12
-  };
+  if (loading) return <div className="loading-state">Loading product details...</div>;
+
+  // Find product from live data
+  const product = allProducts.find(p => p.id === parseInt(id)) || allProducts.find(p => p.slug === id);
+
+  if (!product) {
+    return (
+      <div className="page-wrapper container" style={{ paddingTop: '150px' }}>
+        <h2>Product not found</h2>
+        <Link to="/products" className="btn btn-primary">Back to Products</Link>
+      </div>
+    );
+  }
 
   const isInCart = cartItems.some(item => item.id === product.id);
 
-  const getProductImage = (id) => {
-    if (id === 1) return terminalImg;
-    if (id === 2) return printerImg;
-    if (id === 3) return scannerImg;
-    return null;
-  };
-
-  const image = getProductImage(product.id);
-
   return (
     <div className="page-wrapper product-detail-page">
-      <div className="container">
+      <div className="container" style={{ paddingTop: '120px' }}>
         <div className="breadcrumb">
           <Link to="/products">Products</Link>
           <FiChevronRight size={14} />
@@ -44,8 +37,8 @@ const ProductDetail = () => {
 
         <div className="product-detail-layout">
           <div className="product-detail-image">
-            {image ? (
-              <img src={image} alt={product.name} />
+            {product.image ? (
+              <img src={getImageUrl(product.image)} alt={product.name} />
             ) : (
               <div className="product-detail-placeholder">
                 <FiPackage size={120} />
@@ -60,14 +53,14 @@ const ProductDetail = () => {
             <div className="info-rating">
               <div className="stars">
                 {[...Array(5)].map((_, i) => (
-                  <FiStar key={i} fill={i < Math.floor(product.rating) ? '#FFC107' : 'none'} color="#FFC107" size={18} />
+                  <FiStar key={i} fill={i < Math.floor(product.rating || 5) ? '#FFC107' : 'none'} color="#FFC107" size={18} />
                 ))}
               </div>
-              <span>{product.rating} ({product.reviews} Reviews)</span>
+              <span>{product.rating || '5.0'}</span>
             </div>
 
             <div className="info-price">
-              <span className="currency">{siteConfig.currency}</span> {product.price}
+              <span className="currency">{config.currency}</span> {product.price}
             </div>
 
             <p className="info-desc">{product.description}</p>
@@ -91,12 +84,22 @@ const ProductDetail = () => {
 
             <div className="info-features">
               <h3>Key Specifications</h3>
-              <ul>
-                <li>Genuine Brand New Hardware</li>
-                <li>1 Year Local Warranty in Qatar</li>
-                <li>Free Installation & Training</li>
-                <li>24/7 Technical Support</li>
-              </ul>
+              {product.specs ? (
+                <div className="specs-json">
+                  {Object.entries(product.specs).map(([key, value]) => (
+                    <div key={key} className="spec-row">
+                      <strong>{key}:</strong> {value}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <ul>
+                  <li>Genuine Brand New Hardware</li>
+                  <li>1 Year Local Warranty in Qatar</li>
+                  <li>Free Installation & Training</li>
+                  <li>24/7 Technical Support</li>
+                </ul>
+              )}
             </div>
           </div>
         </div>

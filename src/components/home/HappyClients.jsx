@@ -1,31 +1,40 @@
-import { FiShoppingBag, FiShoppingCart, FiHeart, FiCoffee, FiZap, FiStar } from 'react-icons/fi';
-import { clients } from '../../data/siteData';
-import './Marquee.css';
-
-const clientIcons = [FiCoffee, FiShoppingBag, FiShoppingCart, FiHeart, FiZap, FiStar];
+import { useSiteData } from '../../context/SiteContext';
+import { getImageUrl } from '../../services/api';
+import './HappyClients.css';
 
 const HappyClients = () => {
-  const doubledClients = [...clients, ...clients];
+  const { clients, loading } = useSiteData();
+
+  if (loading) return null;
+  if (!clients || clients.length === 0) return null;
+
+  const doubled = [...clients, ...clients];
 
   return (
-    <section className="section clients-section">
+    <section className="section clients-section-new">
       <div className="container">
         <div className="section-header">
           <span className="section-label">Trusted By</span>
           <h2>Our Happy Clients</h2>
         </div>
       </div>
-      <div className="marquee-container">
-        <div className="marquee-track" style={{ animationDuration: '35s' }}>
-          {doubledClients.map((client, i) => {
-            const Icon = clientIcons[i % clientIcons.length];
-            return (
-              <div className="client-logo" key={`${client.id}-${i}`}>
-                <div className="client-icon"><Icon size={18} /></div>
-                {client.name}
+      <div className="clients-marquee-wrap">
+        <div className="clients-marquee-track">
+          {doubled.map((client, i) => (
+            <div
+              className={`client-card tilt-3d ${i % 2 === 0 ? 'client-blue' : 'client-white'}`}
+              key={`${client.id}-${i}`}
+            >
+              <div className="client-card-logo">
+                {client.logo ? (
+                  <img src={getImageUrl(client.logo)} alt={client.name} />
+                ) : (
+                  <span className="client-card-initials">{client.name.charAt(0)}</span>
+                )}
               </div>
-            );
-          })}
+              <div className="client-card-name">{client.name}</div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

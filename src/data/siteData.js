@@ -95,13 +95,13 @@ export const brands = [
 ];
 
 export const clients = [
-  { id: 1, name: 'Outback steak house' },
-  { id: 2, name: "BO'S Coffee" },
-  { id: 3, name: "Benji's" },
-  { id: 4, name: 'Lebanese bakery' },
-  { id: 5, name: 'Burger barn' },
-  { id: 6, name: 'Dairy queen' },
-  { id: 7, name: 'LE MIU cafe' },
+  { id: 1, name: 'Outback steak house', logo: 'clients/01KTP0B6Q7QDPS6F1Q5M9JZVDW.png' },
+  { id: 2, name: "BO'S Coffee", logo: 'clients/bos-coffee.png' },
+  { id: 3, name: "Benji's", logo: 'clients/benjis.png' },
+  { id: 4, name: 'Lebanese bakery', logo: 'clients/lebanese-bakery.png' },
+  { id: 5, name: 'Burger barn', logo: 'clients/burger-barn.png' },
+  { id: 6, name: 'Dairy queen', logo: 'clients/dairy-queen.png' },
+  { id: 7, name: 'LE MIU cafe', logo: 'clients/le-miu-cafe.png' },
 ];
 
 export const whyChooseUsFeatures = [
