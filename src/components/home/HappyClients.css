@@ -1,4 +1,3 @@
-/* ===== HAPPY CLIENTS MARQUEE ===== */
 .clients-section-new {
   background: var(--bg-gray);
   overflow: hidden;
@@ -58,59 +57,29 @@
 
 .client-card {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 24px 28px;
-  min-width: 180px;
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--border);
-  gap: 14px;
+  padding: 16px;
+  min-width: 160px;
   user-select: none;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-.client-card.client-blue {
-  background: #2563eb;
-  border-color: #2563eb;
-}
-
-.client-card.client-white {
-  background: var(--white);
+  transition: transform 0.3s ease;
 }
 
 .client-card:hover {
-  box-shadow: var(--shadow-lg);
   transform: translateY(-4px);
 }
 
-.client-card.client-blue:hover {
-  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.35);
-}
-
-.client-card.client-white:hover {
-  border-color: #2563eb;
-}
-
 .client-card-logo {
-  width: 90px;
-  height: 90px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 8px;
+  background: transparent;
+  padding: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.client-card.client-blue .client-card-logo {
-  background: var(--white);
-}
-
-.client-card.client-white .client-card-logo {
-  background: #eff6ff;
 }
 
 .client-card-logo img {
@@ -121,50 +90,21 @@
 }
 
 .client-card-initials {
-  font-size: 30px;
+  font-size: 36px;
   font-weight: 800;
   color: #2563eb;
 }
 
-.client-card.client-blue .client-card-initials {
-  color: var(--white);
-}
-
-.client-card.client-white .client-card-initials {
-  color: #2563eb;
-}
-
-.client-card-name {
-  font-size: 14px;
-  font-weight: 700;
-  text-align: center;
-  line-height: 1.3;
-  white-space: nowrap;
-}
-
-.client-card.client-blue .client-card-name {
-  color: var(--white);
-}
-
-.client-card.client-white .client-card-name {
-  color: var(--text);
-}
-
 @media (max-width: 480px) {
   .client-card {
-    padding: 16px 20px;
-    min-width: 140px;
-    gap: 10px;
+    padding: 12px;
+    min-width: 120px;
   }
 
   .client-card-logo {
-    width: 64px;
-    height: 64px;
-    padding: 6px;
-  }
-
-  .client-card-name {
-    font-size: 12px;
+    width: 110px;
+    height: 110px;
+    padding: 10px;
   }
 
   .clients-marquee-track {

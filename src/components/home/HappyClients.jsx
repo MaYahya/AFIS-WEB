@@ -21,10 +21,7 @@ const HappyClients = () => {
       <div className="clients-marquee-wrap">
         <div className="clients-marquee-track">
           {doubled.map((client, i) => (
-            <div
-              className={`client-card tilt-3d ${i % 2 === 0 ? 'client-blue' : 'client-white'}`}
-              key={`${client.id}-${i}`}
-            >
+            <div className="client-card" key={`${client.id}-${i}`}>
               <div className="client-card-logo">
                 {client.logo ? (
                   <img src={getImageUrl(client.logo)} alt={client.name} />
@@ -32,7 +29,6 @@ const HappyClients = () => {
                   <span className="client-card-initials">{client.name.charAt(0)}</span>
                 )}
               </div>
-              <div className="client-card-name">{client.name}</div>
             </div>
           ))}
         </div>
